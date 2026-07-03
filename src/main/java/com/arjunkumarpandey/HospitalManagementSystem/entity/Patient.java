@@ -3,18 +3,21 @@ package com.arjunkumarpandey.HospitalManagementSystem.entity;
 import com.arjunkumarpandey.HospitalManagementSystem.entity.type.BloodGroupType;
 import com.arjunkumarpandey.HospitalManagementSystem.entity.type.Gender;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @ToString
 @Data
 @Table(
-        name = "patient_table",
+//        name = "patient_table",
         uniqueConstraints = {
                 @UniqueConstraint(name = "unique_patient_by_birthdate", columnNames = {"name", "birthDate"})
         },
@@ -40,6 +43,10 @@ public class Patient {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
+    @OneToOne
+   @JoinColumn(name = "insurance_id")//owning_side
+    private Insurance insurance;
+    @OneToMany(mappedBy = "patient")
 
-
+    private List<Appointment> appointments;
 }
