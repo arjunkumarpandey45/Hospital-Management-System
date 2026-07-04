@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -43,10 +44,11 @@ public class Patient {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
-    @OneToOne
-   @JoinColumn(name = "insurance_id")//owning_side
+    @OneToOne(cascade = {CascadeType.ALL},orphanRemoval = true)
+    @JoinColumn(name = "insurance_id")//owning_side
+    @ToString.Exclude
     private Insurance insurance;
-    @OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.EAGER)
 
-    private List<Appointment> appointments;
+    private List<Appointment> appointments = new ArrayList<>();
 }

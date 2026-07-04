@@ -22,10 +22,12 @@ public interface PatientRepo extends JpaRepository<Patient, Long> {
     @Query("select p from Patient p where p.bloodGroup=?1")
     List<Patient> findByBloodGroup(BloodGroupType bloodGroup);
 
-    @Query(value = "select * from patient_table", nativeQuery = true)
+    @Query(value = "select * from patient", nativeQuery = true)
     List<Patient> findAllPatient();
-    @Query(value = "select * from patient_table",   countQuery = "SELECT COUNT(*) FROM patient_table",nativeQuery = true)
+
+    @Query(value = "select * from patient", countQuery = "SELECT COUNT(*) FROM patient", nativeQuery = true)
     Page<Patient> findAllPatient(Pageable page);
+
     @Transactional
     @Modifying
     @Query("update Patient p set p.name=:name where p.id=:id")
@@ -35,8 +37,11 @@ public interface PatientRepo extends JpaRepository<Patient, Long> {
     List<PatientProjection> findPatientByBloodGroup(
             @Param("bloodGroup") BloodGroupType bloodGroup
     );
+
     @Query("  SELECT new com.arjunkumarpandey.HospitalManagementSystem.dto.PatientDto(p.name, p.birthDate) FROM Patient p WHERE p.bloodGroup = :bloodGroup")
     List<PatientDto> findPatientDTOByBloodGroup(
             @Param("bloodGroup") BloodGroupType bloodGroup
     );
+@Query("select p from Patient p left join fetch p.appointments a left join fetch a.doctor")
+    List<Patient> findAllPatientWithAppointmentAndDoctor();
 }

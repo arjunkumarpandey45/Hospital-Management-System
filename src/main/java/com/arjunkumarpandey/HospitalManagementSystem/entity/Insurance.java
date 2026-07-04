@@ -1,19 +1,20 @@
 package com.arjunkumarpandey.HospitalManagementSystem.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Insurance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
