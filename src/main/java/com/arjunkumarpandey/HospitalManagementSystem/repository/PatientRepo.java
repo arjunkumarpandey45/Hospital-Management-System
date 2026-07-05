@@ -6,6 +6,7 @@ import com.arjunkumarpandey.HospitalManagementSystem.entity.Patient;
 import com.arjunkumarpandey.HospitalManagementSystem.entity.type.BloodGroupType;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -42,6 +44,12 @@ public interface PatientRepo extends JpaRepository<Patient, Long> {
     List<PatientDto> findPatientDTOByBloodGroup(
             @Param("bloodGroup") BloodGroupType bloodGroup
     );
-@Query("select p from Patient p left join fetch p.appointments a left join fetch a.doctor")
+
+    @Query("select p from Patient p left join fetch p.appointments a left join fetch a.doctor")
     List<Patient> findAllPatientWithAppointmentAndDoctor();
-}
+
+    @Query("SELECT p FROM Patient p LEFT JOIN FETCH p.appointments")
+    List<Patient> findAllPatientWithAppointment();
+    @Query("SELECT p FROM Patient p")
+    List<Patient> findAllPatients(Pageable pageable);}
+

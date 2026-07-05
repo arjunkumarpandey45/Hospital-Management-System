@@ -14,3 +14,8 @@ spring:
     properties:
       hibernate:
         format-sql: true
+
+  security:
+    user:
+      name: Arjun
+      password: user
